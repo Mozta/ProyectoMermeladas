@@ -117,23 +117,28 @@ app = Flask(__name__)
 def home():
     if request.method == 'GET':
         try:
-            tasks = read_docs(order_ref)
-            print(tasks)
+            orders = read_docs(order_ref)
+            clients = read_docs(client_ref)
             completed = []
             incompleted = []
-            for task in tasks:
-                if task['check']==True:
-                    completed.append(task)
+
+            for order in orders:
+                if order['check']==True:
+                    completed.append(order)
                 else:
-                    incompleted.append(task)
+                    incompleted.append(order)
+
         except:
-            tasks = []
+            orders = []
             print("error")
+        print(len(incompleted))
         response = {
             'completed':completed,
             'incompleted':incompleted,
-            'contador1':len(completed),
-            'contador2':len(incompleted)
+            'completadas':len(completed),
+            'pendientes':len(incompleted),
+            'clientes':len(clients),
+            'allclients':clients
         }
         return render_template('index.html', response=response)
     else:
