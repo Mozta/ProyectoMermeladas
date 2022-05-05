@@ -117,7 +117,7 @@ app = Flask(__name__)
 def home():
     if request.method == 'GET':
         try:
-            tasks = read_doc(order_ref)
+            tasks = read_docs(order_ref)
             print(tasks)
             completed = []
             incompleted = []
@@ -147,8 +147,6 @@ def home():
 
 @app.route('/update/<string:id>', methods=['GET'])
 def update(id):
-        # print(f"\nVas a actualizar {id}\n")
-        # return redirect('/')
     try:
             update_order(order_ref, id)
             return redirect('/')
