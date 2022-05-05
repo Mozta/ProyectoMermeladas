@@ -1,10 +1,10 @@
-from http import client
-from pydoc import doc
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 import datetime, json
 import requests
+from flask import Flask, url_for, flash
+from flask import render_template, request, redirect
 import requests
 
 
@@ -107,7 +107,70 @@ def search_client(name):
 # order = create_order(order_ref, 'Alejandro Linares', 12)
 # cancel_order = delete_doc(order_ref, 'Vp817kHiCr9RxUjEasiX')
 #update_order(order_ref, 'ReFj2pOnaUueU3OyrQta')
-cancel_order = delete_order(order_ref, 'WcJXfojf8Bw9oEbe4OXC')
+# cancel_order = delete_order(order_ref, 'WcJXfojf8Bw9oEbe4OXC')
+
+
+app = Flask(__name__)
+
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'GET':
+        try:
+            tasks = read_doc(order_ref)
+            print(tasks)
+            completed = []
+            incompleted = []
+            for task in tasks:
+                if task['check']==True:
+                    completed.append(task)
+                else:
+                    incompleted.append(task)
+        except:
+            tasks = []
+            print("error")
+        response = {
+            'completed':completed,
+            'incompleted':incompleted,
+            'contador1':len(completed),
+            'contador2':len(incompleted)
+        }
+        return render_template('index.html', response=response)
+    else:
+        name = request.form["name"]
+        try:
+            create_order(order_ref, name)
+            return redirect('/')
+        except:
+            pass
+    
+
+@app.route('/update/<string:id>', methods=['GET'])
+def update(id):
+        # print(f"\nVas a actualizar {id}\n")
+        # return redirect('/')
+    try:
+            update_order(order_ref, id)
+            return redirect('/')
+    except:
+        return redirect('/')
+
+
+@app.route('/delete/<string:id>', methods=['GET'])
+def delete(id):
+    print(f"\nVas a borrar {id}\n")
+    try:
+        delete_order(order_ref, id)
+        return redirect('/')
+    except:
+    
+        return redirect('/')
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 
 
