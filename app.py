@@ -142,6 +142,40 @@ def home():
         }
         return render_template('index.html', response=response)
 
+    
+@app.route('/ordenes', methods=['GET', 'POST'])
+def ordenes():
+    if request.method == 'GET':
+            try:
+                orders = read_docs(order_ref)
+                completed = []
+                incompleted = []
+
+                for order in orders:
+                    if order['check']==True:
+                        completed.append(order)
+                    else:
+                        incompleted.append(order)
+            except:
+                order = []
+                print("error")
+            response = {
+                'completed':completed,
+                'incompleted':incompleted,
+                'contador1':len(completed),
+                'contador2':len(incompleted)
+            }
+            return render_template('ordenes.html', response=response)
+    else:
+        name = request.form["name"]
+        qty = request.form["qty"]
+        try:
+            create_order(order_ref, name, qty)
+            return redirect('/ordenes')
+        except:
+            pass
+    
+
 
 @app.route('/update/<string:id>', methods=['GET'])
 def update(id):
