@@ -181,7 +181,8 @@ def ordenes():
 def update(id):
     try:
             update_order(order_ref, id)
-            return redirect('/')
+            return redirect(request.referrer)
+
     except:
         return redirect('/')
 
@@ -191,10 +192,11 @@ def delete(id):
     print(f"\nVas a borrar {id}\n")
     try:
         delete_order(order_ref, id)
-        return redirect('/')
+        return redirect(request.referrer)
+
     except:
-    
-        return redirect('/')
+        return redirect(request.referrer)
+
 
 
 
