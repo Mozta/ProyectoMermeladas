@@ -240,6 +240,16 @@ def deletec(id):
     except:
         return redirect(request.referrer)
 
+@app.route('/deleteh/<string:id>', methods=['GET'])
+def deleteh(id):
+    print(f"\nVas a borrar {id}\n")
+    try:
+        delete_doc(history_ref, id)
+        return redirect(request.referrer)
+
+    except:
+        return redirect(request.referrer)
+
 
 
 
