@@ -113,7 +113,7 @@ def search_client(name):
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def home():
     if request.method == 'GET':
         try:
@@ -141,14 +141,7 @@ def home():
             'allclients':clients
         }
         return render_template('index.html', response=response)
-    else:
-        name = request.form["name"]
-        try:
-            create_order(order_ref, name)
-            return redirect('/')
-        except:
-            pass
-    
+
 
 @app.route('/update/<string:id>', methods=['GET'])
 def update(id):
