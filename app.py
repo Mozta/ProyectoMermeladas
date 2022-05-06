@@ -175,6 +175,26 @@ def ordenes():
         except:
             pass
     
+@app.route('/clientes', methods=['GET', 'POST'])
+def clientes():
+    if request.method == 'GET':
+            try:
+                clients = read_docs(client_ref)
+            except:
+                print("error")
+            response = {
+
+            'allclients':clients
+            }
+            return render_template('clientes.html', response=response)
+    else:
+        name = request.form["name"]
+        try:
+            create_client(client_ref, name)
+            return redirect('/clientes')
+        except:
+            pass
+    
 
 
 @app.route('/update/<string:id>', methods=['GET'])
@@ -192,6 +212,16 @@ def delete(id):
     print(f"\nVas a borrar {id}\n")
     try:
         delete_order(order_ref, id)
+        return redirect(request.referrer)
+
+    except:
+        return redirect(request.referrer)
+
+@app.route('/deletec/<string:id>', methods=['GET'])
+def deletec(id):
+    print(f"\nVas a borrar {id}\n")
+    try:
+        delete_doc(client_ref, id)
         return redirect(request.referrer)
 
     except:
