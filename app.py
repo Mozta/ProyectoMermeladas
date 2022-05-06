@@ -195,6 +195,19 @@ def clientes():
         except:
             pass
     
+@app.route('/historial', methods=['GET'])
+def historial():
+    if request.method == 'GET':
+            try:
+                clients = read_docs(history_ref)
+            except:
+                print("error")
+            response = {
+            'history':clients
+            }
+            return render_template('historial.html', response=response)
+
+    
 
 
 @app.route('/update/<string:id>', methods=['GET'])
