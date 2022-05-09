@@ -48,6 +48,13 @@ def create_history(ref, name, action):
         'date':datetime.datetime.now()
         }
         ref.document().set(info)
+    elif action == 'entregada':
+        info = {
+        'cliente': name,
+        'action': action,
+        'date':datetime.datetime.now()
+        }
+        ref.document().set(info)
     elif action == 'compro':
         info = {
         'cliente': name,
@@ -93,6 +100,12 @@ def delete_order(ref,id):
     doc = read_doc(ref,id)
     client = doc['name']
     create_history(history_ref, client, 'cancelo')
+    ref.document(id).delete()
+
+def deliver_order(ref,id):
+    doc = read_doc(ref,id)
+    client = doc['name']
+    create_history(history_ref, client, 'entregada')
     ref.document(id).delete()
     
 def search_client(name):
@@ -246,10 +259,18 @@ def deleteh(id):
     try:
         delete_doc(history_ref, id)
         return redirect(request.referrer)
-
     except:
         return redirect(request.referrer)
+        
 
+@app.route('/deleteh2/<string:id>', methods=['GET'])
+def deleteh2(id):
+    print(f"\nVas a borrar {id}\n")
+    try:
+        deliver_order(order_ref, id)
+        return redirect(request.referrer)
+    except:
+        return redirect(request.referrer)
 
 
 
