@@ -213,10 +213,11 @@ def historial():
     if request.method == 'GET':
             try:
                 clients = read_docs(history_ref)
+                hist = sorted(clients, key=lambda i: i['date'], reverse=True)
             except:
                 print("error")
             response = {
-            'history':clients
+            'history':hist
             }
             return render_template('historial.html', response=response)
 
