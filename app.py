@@ -186,7 +186,8 @@ def ordenes():
             create_order(order_ref, name, qty)
             return redirect('/ordenes')
         except:
-            pass
+            flash('El cliente no existe')
+            return redirect(request.referrer)
     
 @app.route('/clientes', methods=['GET', 'POST'])
 def clientes():
@@ -206,7 +207,7 @@ def clientes():
             create_client(client_ref, name)
             return redirect('/clientes')
         except:
-            pass
+            return redirect(request.referrer)
     
 @app.route('/historial', methods=['GET'])
 def historial():
@@ -231,7 +232,7 @@ def update(id):
             return redirect(request.referrer)
 
     except:
-        return redirect('/')
+        return redirect(request.referrer)
 
 
 @app.route('/delete/<string:id>', methods=['GET'])
