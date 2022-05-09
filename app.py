@@ -276,12 +276,15 @@ def deleteh2(id):
         return redirect(request.referrer)
 
 
-PORT = int(os.environ.get("PORT", 8080))
+PORT = int(os.environ.get("PORT",8080))
 if __name__ == '__main__':
     app.run(threaded=True, host='0.0.0.0', port=PORT)
 
 
 
+PORT = int(os.environ.get("PORT",8080))
+if __name__ == '__main__':
+    app.run(threaded=True, host='0.0.0.0', port=PORT)
 
 
 
