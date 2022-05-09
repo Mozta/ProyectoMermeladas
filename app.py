@@ -6,6 +6,7 @@ import requests
 from flask import Flask, url_for, flash
 from flask import render_template, request, redirect
 import requests
+import os
 
 
 cred = credentials.Certificate("firebase-key.json")
@@ -275,9 +276,9 @@ def deleteh2(id):
         return redirect(request.referrer)
 
 
-
+port = int(os.environ.get('PORT', 8080))
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=port, threaded=True)
 
 
 
